@@ -72,6 +72,8 @@ function main () {
     let validador: ProxyValidacao;
     validador = new ProxyValidacao(new Validacao());
     let acesso : boolean = validador.validarAcesso(usuario);
+    acesso = validador.validarAcesso('maria');
+     
 }
 
 main ();
