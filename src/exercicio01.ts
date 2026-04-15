@@ -1,7 +1,7 @@
 interface Canal {
     enviarMensagem(mensagem: string): void;
 }
-import { AdaptadorCanal ,Servicowhatsapp, ProxyValidacao, Validacao } from './exerciocio02';
+import { AdaptadorCanal ,Servicowhatsapp, ProxyValidacao, Validacao } from './exercicio02';
 
 
 class email implements Canal {
@@ -72,6 +72,8 @@ function main () {
     let validador: ProxyValidacao;
     validador = new ProxyValidacao(new Validacao());
     let acesso : boolean = validador.validarAcesso(usuario);
+    acesso = validador.validarAcesso('maria');
+
 }
 
 main ();
