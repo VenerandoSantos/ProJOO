@@ -5,7 +5,7 @@ Sujeito Rio
 */
 
 interface Observador {
-    atualizar(dados: any): void;
+    atualizar(sujeito: sujeitoRio): void;
 }
 
 class sujeitoRio {
@@ -19,9 +19,9 @@ class sujeitoRio {
         this.observadores = this.observadores.filter((o) => o !== observador);
     }
 
-    protected notificarObservadores(dados: any) {
+    public notificarObservadores() {
         for (const observador of this.observadores) {
-            observador.atualizar(dados);
+            observador.atualizar(this);
         }
     }
 }   
@@ -38,27 +38,31 @@ class Rio extends sujeitoRio {
         this.temperaturaAgua = 25;
     }
 
+    get nivel(): number {
+        return this.nivelAgua;
+    }
+
+    get ph(): number {
+        return this.phAgua;
+    }
+
+    get temperatura(): number {
+        return this.temperaturaAgua;
+    }
+
     public atualizarNivelAgua(nivel: number): void {
         this.nivelAgua = nivel;
-        this.notificarObservadores(this.getStatus());
+        this.notificarObservadores();
     }
 
     public atualizarPHAgua(ph: number): void {
         this.phAgua = ph;
-        this.notificarObservadores(this.getStatus());
+        this.notificarObservadores();
     }
 
     public atualizarTemperaturaAgua(temperatura: number): void {
         this.temperaturaAgua = temperatura;
-        this.notificarObservadores(this.getStatus());
-    }
-
-    private getStatus(): any {
-        return {
-            nivel: this.nivelAgua,
-            ph: this.phAgua,
-            temperatura: this.temperaturaAgua
-        };
+        this.notificarObservadores();
     }
 
 }
@@ -69,20 +73,42 @@ class Universidade implements Observador {
         this.name = name;
     }
 
-    public atualizar(dados: any): void {
-        console.log(`Universidade ${this.name} recebeu atualização:`, dados);  
+    public atualizar(sujeito: sujeitoRio): void {
+        if (sujeito instanceof Rio) {
+            console.log(`Universidade ${this.name} recebeu atualização do rio: nivel ${sujeito.nivel} ph ${sujeito.ph} temperatura ${sujeito.temperatura}`);
+        }
     }
+
 }
 
-function main() {
+function teste() {
     const RioSaoFrancisco = new Rio();
+    const RioAmazonas = new Rio();
+    const RioParana = new Rio();
+
     const UniversidadeFederal = new Universidade("UNIFESP");
+    const UniversidadeEstadual = new Universidade("UNESP");
+    
+
     RioSaoFrancisco.adicionarObservador(UniversidadeFederal);
+    RioAmazonas.adicionarObservador(UniversidadeFederal);
+    RioAmazonas.adicionarObservador(UniversidadeEstadual);
+    RioParana.adicionarObservador(UniversidadeFederal);
+
 
     RioSaoFrancisco.atualizarNivelAgua(5);
     RioSaoFrancisco.atualizarPHAgua(6.5);
     RioSaoFrancisco.atualizarTemperaturaAgua(22);
 
+    RioAmazonas.atualizarNivelAgua(10);
+    RioAmazonas.atualizarPHAgua(7.2);
+    RioAmazonas.atualizarTemperaturaAgua(28);
+
+    RioParana.atualizarNivelAgua(3);
+    RioParana.atualizarPHAgua(6.8);
+    RioParana.atualizarTemperaturaAgua(20);
+
+
 }
 
-main();
+teste();
