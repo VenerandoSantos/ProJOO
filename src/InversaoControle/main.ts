@@ -1,9 +1,3 @@
-/*
-Sujeito Rio
-
-
-*/
-
 interface Observador {
     atualizar(sujeito: sujeitoRio): void;
 }
@@ -21,11 +15,13 @@ class sujeitoRio {
 
     public notificarObservadores() {
         for (const observador of this.observadores) {
+            //callBack
             observador.atualizar(this);
         }
     }
 }   
 
+/*Classe Sujeito, ou observavel*/
 class Rio extends sujeitoRio {
     private nivelAgua: number;
     private phAgua: number;
@@ -57,6 +53,7 @@ class Rio extends sujeitoRio {
 
     public atualizarPHAgua(ph: number): void {
         this.phAgua = ph;
+
         this.notificarObservadores();
     }
 
@@ -67,6 +64,7 @@ class Rio extends sujeitoRio {
 
 }
 
+/*Classe Observadora*/
 class Universidade implements Observador {
     public name: string;
     constructor(name: string) {
@@ -75,10 +73,10 @@ class Universidade implements Observador {
 
     public atualizar(sujeito: sujeitoRio): void {
         if (sujeito instanceof Rio) {
+            //painel ou inverção de controle
             console.log(`Universidade ${this.name} recebeu atualização do rio: nivel ${sujeito.nivel} ph ${sujeito.ph} temperatura ${sujeito.temperatura}`);
         }
     }
-
 }
 
 function teste() {
