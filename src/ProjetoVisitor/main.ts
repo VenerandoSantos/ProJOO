@@ -8,14 +8,15 @@
 - pdf
 
 cada um podera gerar um outro tipo de arquivo
-gerarPDF()
-gerarHTML()
+conveterPDF()
+convterHTML()
 
 
 */
 
 interface Visitor {
     visit(arq: Html) :void ;
+    visit(arq: Exel) :void ;
 }
 
 abstract class Arquivos {
@@ -32,7 +33,23 @@ abstract class Arquivos {
     aceept (visita: Visitor){}
 }
 
+class Exel extends Arquivos {
+    impressao() {
+        console.log("oi, eu sou um Excel.\n");
+    }
+
+    accept(visitor: Visitor) {
+        visitor.visit(this);
+    }
+
+}
+
 class Html extends Arquivos {
+
+    constructor(texto:string){
+        super(texto);
+
+    }
 
     impressao () {
         console.log ("oi, eu sou um HTML.\n");
@@ -53,7 +70,8 @@ class ConvertArquivoPDFVisitor implements Visitor {
 }
 
 function teste () {
-    console.log ("hello world")
+    const arquivoHTML = new Html ("arquivo01")
+    arquivoHTML.accept(new ConvertArquivoPDFVisitor());
 }
 
 teste ();
